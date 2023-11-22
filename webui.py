@@ -103,10 +103,10 @@ def sample(
     fps_id: int = 6,
     motion_bucket_id: int = 127,
     cond_aug: float = 0.02,
-    seed: int = 23,
-    decoding_t: int = 14,  # Number of frames decoded at a time! This eats most VRAM. Reduce if necessary.
-    device: str = "cuda:0",
-    output_folder: Optional[str] = "/content/outputs",
+    seed: int = 1026,
+    decoding_t: int = 2,  # Number of frames decoded at a time! This eats most VRAM. Reduce if necessary.
+    device: str = "cuda",
+    output_folder: Optional[str] = "./outputs",
 ):
     """
     Simple script to generate a single sample conditioned on an image `input_path` or multiple images, one for each
