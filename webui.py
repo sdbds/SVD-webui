@@ -12,8 +12,9 @@ import random
 
 sys.path.append("generative-models")
 from sgm.util import instantiate_from_config
-from sgm.inference.helpers import embed_watermark
-from scripts.util.detection.nsfw_and_watermark_dectection import DeepFloydDataFiltering
+
+# from sgm.inference.helpers import embed_watermark
+# from scripts.util.detection.nsfw_and_watermark_dectection import DeepFloydDataFiltering
 
 from glob import glob
 from pathlib import Path
@@ -46,8 +47,9 @@ def load_model(
             .requires_grad_(False)
         )
 
-    filter = DeepFloydDataFiltering(verbose=False, device=device)
-    return model, filter
+    # filter = DeepFloydDataFiltering(verbose=False, device=device)
+    filter = ""
+    return model  # , filter
 
 
 def get_unique_embedder_keys(conditioner):
@@ -260,8 +262,8 @@ def sample(
                     (samples.shape[-1], samples.shape[-2]),
                 )
 
-                samples = embed_watermark(samples)
-                samples = filter(samples)
+                # samples = embed_watermark(samples)
+                # samples = filter(samples)
                 vid = (
                     (rearrange(samples, "t c h w -> t h w c") * 255)
                     .cpu()
@@ -284,7 +286,7 @@ def infer(
     seed: str,
     decoding_t: int,
 ) -> str:
-    if seed == "random":
+    if seed in {"random", "-1"}:
         seed = random.randint(0, 2**32)
     seed = int(seed)
     output_paths = sample(
@@ -295,9 +297,10 @@ def infer(
         fps_id=6,
         motion_bucket_id=127,
         cond_aug=0.02,
-        seed=23,
+        seed=1026,
         decoding_t=decoding_t,  # Number of frames decoded at a time! This eats most VRAM. Reduce if necessary.
         device=device,
+        output_folder=args.outputs,
     )
     return output_paths[0]
 
@@ -315,18 +318,28 @@ if __name__ == "__main__":
     if version == "svd":
         num_frames = 14
         num_steps = 25
-        # output_folder = default(output_folder, "outputs/simple_video_sample/svd/")
         model_config = "generative-models/scripts/sampling/configs/svd.yaml"
     elif version == "svd_xt":
         num_frames = 25
         num_steps = 30
-        # output_folder = default(output_folder, "outputs/simple_video_sample/svd_xt/")
         model_config = "generative-models/scripts/sampling/configs/svd_xt.yaml"
+    elif version == "svd_image_decoder":
+        num_frames = 14
+        num_steps = 25
+        model_config = (
+            "generative-models/scripts/sampling/configs/svd_image_decoder.yaml"
+        )
+    elif version == "svd_xt_image_decoder":
+        num_frames = 25
+        num_steps = 30
+        model_config = (
+            "generative-models/scripts/sampling/configs/svd_xt_image_decoder.yaml"
+        )
     else:
         raise ValueError(f"model {version} does not exist.")
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    model, filter = load_model(
+    model = load_model(
         model_config,
         device,
         num_frames,

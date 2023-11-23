@@ -1,4 +1,4 @@
-$model_path="./checkpoints/svd_xt.safetensors"
+$model_path="./checkpoints/svd.safetensors"
 $outputs="./outputs"
 $port=7860
 

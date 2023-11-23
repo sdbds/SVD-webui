@@ -9,7 +9,7 @@ if (!(Test-Path -Path "venv")) {
 .\venv\Scripts\activate
 
 Write-Output "Installing deps..."
-pip install -r requirements.txt
+pip install -U -r requirements.txt
 pip install -e generative-models
 pip install -e git+https://github.com/Stability-AI/datapipelines.git@main#egg=sdata
 pip install gradio
