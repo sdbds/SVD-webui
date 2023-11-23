@@ -376,7 +376,7 @@ if __name__ == "__main__":
             video_out = gr.Video(label="generated video")
         examples = [
             [
-                "https://user-images.githubusercontent.com/33302880/284758167-367a25d8-8d7b-42d3-8391-6d82813c7b0f.png"
+                "https://user-images.githubusercontent.com/8085926/285306818-37a63a1b-2faa-48ab-93fe-6dd9ee5d52b2.png"
             ]
         ]
         inputs = [image, resize_image, n_frames, n_steps, seed, decoding_t]
