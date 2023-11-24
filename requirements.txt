@@ -25,7 +25,7 @@ streamlit
 tensorboardx==2.6
 timm>=0.9.2
 tokenizers==0.12.1
-torchdata==0.6.1
+torchdata==0.7.1
 torchmetrics>=1.0.1
 tqdm>=4.65.0
 transformers==4.19.1
